@@ -1,0 +1,1 @@
+export { FirestoreTransport, FirestoreTransportConstructor} from './firestore-transport'
