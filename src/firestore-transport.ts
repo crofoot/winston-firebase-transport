@@ -1,47 +1,55 @@
 import * as admin from 'firebase-admin';
 import Transport from 'winston-transport';
-
-export interface FirestoreTransportConstructor {
-	firebaseConfig: {
-		apiKey: string;
-		authDomain: string;
-		projectId: string;
-		storageBucket: string;
-		messagingSenderId: string;
-		appId: string;
-		measurementId: string;
-	};
-	applicationName: string;
-	transportOptions?: Transport.TransportStreamOptions;
-}
+import 'firebase-admin/lib/firestore';
+import { Log, StorageType, FirestoreTransportConstructor } from './types';
 
 export class FirestoreTransport extends Transport {
+	private firestoreTransportOptions: FirestoreTransportConstructor;
+
 	constructor(opts: FirestoreTransportConstructor) {
-		super(opts.transportOptions);
-		admin.initializeApp(opts.firebaseConfig, 'winston');
+		super(opts.logger);
+		this.firestoreTransportOptions = opts;
+		admin.initializeApp(opts.firebaseConfig);
+
+		// Required to use firestore
+		if (opts.storageType === StorageType.Firestore) {
+			admin.firestore();
+		}
 	}
 
-	log(info: any, callback: Function) {
+	async log(info: any, callback: Function) {
 		setImmediate(() => {
 			this.emit('logged', info);
 		});
 
-		switch (info.level) {
-			case 'warn':
-				break;
-			case 'info':
-				break;
-			case 'http':
-				break;
-			case 'verbose':
-				break;
-			case 'debug':
-				break;
-			case 'silly':
-				break;
+		let log: Log = {
+			date: Date.now(),
+			level: info.level,
+			message: info.message,
+		};
+
+		try {
+			switch (this.firestoreTransportOptions.storageType) {
+				case StorageType.Firestore:
+					await firestoreLogger(log);
+					break;
+				case StorageType.Realtime:
+					await realtimeLogger(log);
+					break;
+				default:
+					throw Error('Storage type is undefined');
+			}
+		} catch {
+		} finally {
+			callback();
 		}
-		callback();
 	}
 }
 
-admin.initializeApp();
+export const realtimeLogger = async (log: Log): Promise<void> => {
+	console.log(log);
+};
+
+export const firestoreLogger = async (log: Log): Promise<void> => {
+	console.log(log);
+};

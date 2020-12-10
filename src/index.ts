@@ -1,1 +1,2 @@
-export { FirestoreTransport, FirestoreTransportConstructor} from './firestore-transport'
+export { FirestoreTransport } from './firestore-transport';
+export { StorageType, FirebaseStorageType, FirestoreTransportConstructor } from './types';

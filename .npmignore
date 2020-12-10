@@ -1,0 +1,7 @@
+__test__
+src
+.env
+.prettierrc
+jest.config.ts
+README.md
+tsconfig.json
