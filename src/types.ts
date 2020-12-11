@@ -23,9 +23,11 @@ export interface FirestoreTransportConstructor {
 		storageBucket: string;
 		messagingSenderId: string;
 		appId: string;
+		databaseURL: string;
 		measurementId: string;
 	};
 	storageType: FirebaseStorageType;
 	applicationName: string;
 	logger?: LoggerOptions;
+	collectionName: string;
 }

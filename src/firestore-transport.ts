@@ -1,6 +1,6 @@
-import * as admin from 'firebase-admin';
+import firebase from 'firebase';
 import Transport from 'winston-transport';
-import 'firebase-admin/lib/firestore';
+import 'firebase/firestore';
 import { Log, StorageType, FirestoreTransportConstructor } from './types';
 
 export class FirestoreTransport extends Transport {
@@ -9,11 +9,12 @@ export class FirestoreTransport extends Transport {
 	constructor(opts: FirestoreTransportConstructor) {
 		super(opts.logger);
 		this.firestoreTransportOptions = opts;
-		admin.initializeApp(opts.firebaseConfig);
+		console.log(opts.firebaseConfig);
+		firebase.initializeApp(opts.firebaseConfig);
 
 		// Required to use firestore
 		if (opts.storageType === StorageType.Firestore) {
-			admin.firestore();
+			firebase.firestore();
 		}
 	}
 
@@ -31,25 +32,27 @@ export class FirestoreTransport extends Transport {
 		try {
 			switch (this.firestoreTransportOptions.storageType) {
 				case StorageType.Firestore:
-					await firestoreLogger(log);
+					await firestoreLogger(log, this.firestoreTransportOptions.applicationName, this.firestoreTransportOptions.collectionName);
 					break;
 				case StorageType.Realtime:
-					await realtimeLogger(log);
+					await realtimeLogger(log, this.firestoreTransportOptions.applicationName, this.firestoreTransportOptions.collectionName);
 					break;
 				default:
 					throw Error('Storage type is undefined');
 			}
-		} catch {
+		} catch (error) {
+			console.log(error);
 		} finally {
 			callback();
 		}
 	}
 }
 
-export const realtimeLogger = async (log: Log): Promise<void> => {
+export const realtimeLogger = async (log: Log, app: string, collection: string): Promise<void> => {
 	console.log(log);
+	await firebase.database().ref(`${app}/${collection}`).set(log);
 };
 
-export const firestoreLogger = async (log: Log): Promise<void> => {
-	console.log(log);
+export const firestoreLogger = async (log: Log, app: string, collection: string): Promise<void> => {
+	await firebase.firestore().collection(`${app}-${collection}`).add(log);
 };
