@@ -7,9 +7,12 @@
 ### Example
 
 ```typescript
+import { createLogger, Logger } from 'winston';
+import { FirebaseTransport } from 'winston-firebase-transport';
+
 logger = createLogger({
 	transports: [
-		new FirestoreTransport({
+		new FirebaseTransport({
 			firebaseConfig: {
 				apiKey: process.env.apiKey!,
 				authDomain: process.env.authDomain!,
