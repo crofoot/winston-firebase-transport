@@ -9,7 +9,6 @@ export class FirebaseTransport extends Transport {
 	constructor(opts: FirebaseTransportConstructor) {
 		super(opts.logger);
 		this.firestoreTransportOptions = opts;
-		console.log(opts.firebaseConfig);
 		firebase.initializeApp(opts.firebaseConfig);
 
 		// Required to use firestore
@@ -49,10 +48,9 @@ export class FirebaseTransport extends Transport {
 }
 
 export const realtimeLogger = async (log: Log, app: string, collection: string): Promise<void> => {
-	console.log(log);
-	await firebase.database().ref(`${app}/${collection}`).set(log);
+	await firebase.database().ref(`${app}/${collection}/${log.level}`).push(log);
 };
 
 export const firestoreLogger = async (log: Log, app: string, collection: string): Promise<void> => {
-	await firebase.firestore().collection(`${app}-${collection}`).add(log);
+	await firebase.firestore().collection(app).doc(collection).collection(log.level).add(log);
 };

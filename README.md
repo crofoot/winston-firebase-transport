@@ -4,6 +4,11 @@
 
 [![NPM](https://img.shields.io/npm/v/winston-firebase-transport.svg)](https://www.npmjs.com/package/winston-firebase-transport)
 
+### Helpful Notes
+
+- For the firebase console enable either the `Realtime` or `Firestore` database AND make sure that write permissions is enabled.
+- If you are using `firestore` you can pass an empty string for `firebaseConfig.databaseURL`.
+
 ### Example
 
 ```typescript

@@ -20,11 +20,11 @@ beforeAll(() => {
 					measurementId: process.env.measurementId!,
 				},
 				logger: {
-					level: 'error',
+					level: 'info',
 				},
 				applicationName: 'test',
 				collectionName: 'logs',
-				storageType: StorageType.Firestore,
+				storageType: StorageType.Realtime,
 			}),
 		],
 	});

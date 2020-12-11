@@ -7,7 +7,7 @@ export enum StorageType {
 
 export type FirebaseStorageType = StorageType.Firestore | StorageType.Realtime;
 
-export type LogLevel = 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
+export type LogLevel = 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly' | 'error';
 
 export type Log = {
 	level: LogLevel;
