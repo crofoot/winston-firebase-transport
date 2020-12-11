@@ -1,5 +1,5 @@
-import Transport from 'winston-transport';
 import { LoggerOptions } from 'winston';
+
 export enum StorageType {
 	Firestore = 'firestore',
 	Realtime = 'realtime',
