@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 import Transport from 'winston-transport';
 import 'firebase/firestore';
-import { Log, StorageType, FirestoreTransportConstructor } from './types';
+import { Log, StorageType, FirebaseTransportConstructor } from './types';
 
-export class FirestoreTransport extends Transport {
-	private firestoreTransportOptions: FirestoreTransportConstructor;
+export class FirebaseTransport extends Transport {
+	private firestoreTransportOptions: FirebaseTransportConstructor;
 
-	constructor(opts: FirestoreTransportConstructor) {
+	constructor(opts: FirebaseTransportConstructor) {
 		super(opts.logger);
 		this.firestoreTransportOptions = opts;
 		console.log(opts.firebaseConfig);

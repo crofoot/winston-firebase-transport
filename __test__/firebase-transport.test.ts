@@ -1,14 +1,14 @@
 import 'dotenv/config';
 import { StorageType } from '../src/types';
 import { createLogger, Logger } from 'winston';
-import { FirestoreTransport } from '../src/firestore-transport';
+import { FirebaseTransport } from '../src/firebase-transport';
 
 let logger: Logger;
 
 beforeAll(() => {
 	logger = createLogger({
 		transports: [
-			new FirestoreTransport({
+			new FirebaseTransport({
 				firebaseConfig: {
 					apiKey: process.env.apiKey!,
 					authDomain: process.env.authDomain!,

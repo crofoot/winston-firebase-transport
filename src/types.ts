@@ -15,7 +15,7 @@ export type Log = {
 	date: number;
 };
 
-export interface FirestoreTransportConstructor {
+export interface FirebaseTransportConstructor {
 	firebaseConfig: {
 		apiKey: string;
 		authDomain: string;
